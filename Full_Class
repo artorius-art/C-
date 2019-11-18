@@ -1,0 +1,358 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Aditya
+{
+    class Person
+    {
+        private string[] name;
+        public string[] Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+        private int[] age;
+        public int[] Age
+        {
+            get { return age; }
+            set { age = value; }
+        }
+        public override string ToString()
+        {
+            return "Hi... I'm " + Name + " And i'm " + Age;
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            main_menu();
+        }
+
+        static void main_menu()
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("MENU \n");
+                Console.WriteLine("1. Checking Person Age");
+                Console.WriteLine("2. Putting Space Between Letters");
+                Console.WriteLine("3. Checking Prime Number in a List<>");
+                Console.WriteLine("4. Splitting Sentences");
+                Console.WriteLine("5. Splitting Sentences Put it in List and Sorting");
+                Console.WriteLine("6. Fibbonaci Number");
+                Console.WriteLine("7. Dividing Number");
+                Console.WriteLine("8. Making X Pattern");
+                Console.WriteLine("9. Showing Supplier In Data Base");
+                Console.WriteLine("10. Showing Name and Price of Supplier\n");
+                Console.WriteLine("0. Exit\n");
+                Console.WriteLine("Enter the Number Above : ");
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        person();
+                        break;
+                    case "2":
+                        space();
+                        break;
+                    case "3":
+                        primas();
+                        break;
+                    case "4":
+                        stringsp();
+                        break;
+                    case "5":
+                        stringlost();
+                        break;
+                    case "6":
+                        fib();
+                        break;
+                    case "7":
+                        divi();
+                        break;
+                    case "8":
+                        pat();
+                        break;
+                    case "9":
+                        dbsp();
+                        break;
+                    case "10":
+                        join();
+                        break;
+                    case "0":exit();
+                        break;
+                }
+            }
+
+        }
+        static void exit()
+        {
+            System.Environment.Exit(0);
+        }
+        static void person()
+        {
+            Console.Clear();
+            Person p = new Person();
+            p.Age = new int[1000];
+            p.Name = new string[1000];
+            int[] ageTemp = new int[1000];
+            int persons;
+            Console.Write("Input Person Value : ");
+            while (!Int32.TryParse(Console.ReadLine(), out persons) || persons < 0)
+            {
+                Console.WriteLine("Person Value invalid. Please enter a valid value:");
+            }
+            for (int i = 1; i <= persons; i++)
+            {
+
+                Console.Write("Person " + i + " Name : ");
+                p.Name[i] = Console.ReadLine();
+                Console.Write("Birth Year of Person " + i + " : ");
+                int currentTime = DateTime.Now.Year;
+                ageTemp[i] = p.Age[i];
+                while (!Int32.TryParse(Console.ReadLine(), out ageTemp[i]) || ageTemp[i] > currentTime || ageTemp[i] < 0)
+                {
+                    Console.WriteLine("Year invalid. Please enter a valid year:");
+                }
+                p.Age[i] = currentTime - ageTemp[i];
+
+            }
+            for (int i = 1; i <= persons; i++)
+            {
+                Console.WriteLine("Hi... I'm " + p.Name[i] + " And i'm " + p.Age[i] + " years old");
+            }
+            Console.WriteLine(" ");
+            Console.WriteLine("Press Enter to continue...");
+            Console.ReadLine();
+            main_menu();
+        }
+        static void space()
+        {
+            Console.Clear();
+            Console.WriteLine("Enter Your Name : ");
+            string nama = Console.ReadLine();
+            System.Text.StringBuilder builder = new System.Text.StringBuilder(nama);
+            for (int i = 0; i < (nama.Length * 2); i += 2)
+            {
+                builder.Insert(i, " ");
+            }
+            Console.WriteLine("Put space between letter : " + builder);
+            Console.ReadLine();
+            Console.WriteLine(" ");
+            Console.WriteLine("Press Enter to continue...");
+            Console.ReadLine();
+            main_menu();
+        }
+        public static bool cekPrima(int n)
+        {
+            bool cek = true;
+            int factor = n / 2;
+            for (int i = 2; i <= factor; i++)
+            {
+                if ((n % i) == 0)
+                {
+                    cek = false;
+                }
+            }
+            return cek;
+        }
+        static void primas()
+        {
+            Console.Clear();
+            List<int> num = new List<int>();
+            num.Add(1);
+            num.Add(2);
+            num.Add(3);
+            num.Add(5);
+            num.Add(7);
+            num.Add(11);
+            num.Add(15);
+            num.Add(17);
+            for (int i = 0; i < num.Count; i++)
+            {
+                if (cekPrima(num[i]) == true)
+                {
+                    Console.WriteLine(num[i] + " is a Prime number ");
+                }
+                else
+                {
+                    Console.WriteLine(num[i] + " is not a Prime number ");
+                }
+            }
+            Console.WriteLine(" ");
+            Console.WriteLine("Press Enter to continue...");
+            Console.ReadLine();
+            main_menu();
+        }
+        static void stringsp()
+        {
+            Console.Clear();
+            Console.WriteLine("Enter some sentences : ");
+            string kalimat = Console.ReadLine();
+            string[] kata = kalimat.Split(' ');
+            Console.WriteLine("Splited words: ");
+            foreach (string kalimatBaru in kata)
+            {
+                Console.WriteLine(kalimatBaru);
+            }
+            Console.WriteLine(" ");
+            Console.WriteLine("Press Enter to continue...");
+            Console.ReadLine();
+            main_menu();
+        }
+        static void stringlost()
+        {
+            Console.Clear();
+            List<string> katabBaru = new List<string>();
+            Console.WriteLine("Enter some sentences : ");
+            string kalimat = Console.ReadLine();
+            string[] kata = kalimat.Split(' ');
+            Console.WriteLine("Splited words and put into List<> : ");
+            for (int i = 0; i < kata.Length; i++)
+            {
+                katabBaru.Add(kata[i]);
+            }
+            katabBaru.Sort();
+            katabBaru.ForEach(Console.WriteLine);
+            Console.WriteLine(" ");
+            Console.WriteLine("Press Enter to continue...");
+            Console.ReadLine();
+            main_menu();
+        }
+
+        static void fib()
+        {
+            Console.Clear();
+            int nol = 0, satu = 1, n, batas;
+            Console.Write("Jumlah Fibonacci : ");
+            while (!Int32.TryParse(Console.ReadLine(), out batas) || batas < 0)
+            {
+                Console.Write("Masukan Angka : ");
+            }
+            Console.Write(satu + " ");
+            for (int i = 2; i <= batas; ++i)
+            {
+                n = nol + satu;
+                Console.Write(n + " ");
+                nol = satu;
+                satu = n;
+            }
+            Console.WriteLine(" ");
+            Console.WriteLine("Press Enter to continue...");
+            Console.ReadLine();
+            main_menu();
+        }
+        static void divi()
+        {
+            Console.Clear();
+            decimal a, b, hasil;
+            Console.Write("Masukan Bilangan Pertama : ");
+            while (!Decimal.TryParse(Console.ReadLine(), out a) || a < 0)
+            {
+                Console.WriteLine("Masukan Angka :");
+            }
+            Console.Write("Masukan Bilangan Kedua : ");
+            while (!Decimal.TryParse(Console.ReadLine(), out b) || b < 0)
+            {
+                Console.WriteLine("Masukan Angka :");
+            }
+            try
+            {
+                Console.WriteLine("Hasil : " + (hasil = a / b));
+            }
+            catch (DivideByZeroException)
+            {
+                Console.WriteLine("Bilangan Tidak bisa di bagi Nol ");
+            }
+            Console.WriteLine(" ");
+            Console.WriteLine("Press Enter to continue...");
+            Console.ReadLine();
+            main_menu();
+        }
+        static void pat()
+        {
+            Console.Clear();
+            int number, i, j;
+            Console.Write("Enter Row Value : ");
+            try
+            {
+                while (!Int32.TryParse(Console.ReadLine(), out number) || number < 0)
+                {
+                    Console.WriteLine("Please Enter Number");
+                }
+                    for (j = number; j > 0; j--)
+                    {
+                        for (i = 0; i < number; i++)
+                        {
+                            if (i == (j - 1) || (number - i) == j)
+                            {
+                                Console.Write("X");
+                            }
+                            else
+                            {
+                                Console.Write(".");
+                            }
+                        }
+                        Console.WriteLine(" ");
+                    }
+            }
+            catch
+            {
+                Console.WriteLine("Please Enter Number");
+            }
+            Console.WriteLine(" ");
+            Console.WriteLine("Press Enter to continue...");
+            Console.ReadLine();
+            main_menu();
+        }
+        static void dbsp()
+        {
+            Console.Clear();
+            using (var db = new TrainingEntities())
+            {
+                var query = from a in db.Suppliers
+                            where a.stsrc == "A"
+                            select a;
+                Console.WriteLine("Menampilkan Table Suppliers : ");
+                foreach (var item in query)
+                {
+                    Console.WriteLine(item.sup_id + "   " + item.sup_nama + "   " + item.stsrc + "   " + item.created_by + "   " + item.date_created);
+                }
+                Console.WriteLine(" ");
+                Console.WriteLine("Press Enter to exit...");
+                Console.ReadKey();
+                main_menu();
+            }
+        }
+        static void join()
+        {
+            Console.Clear();
+            using (var db = new TrainingEntities())
+            {
+                var query = from sp in db.Suppliers
+                            join ph in db.Pengadaan_Header
+                            on sp.sup_id equals ph.supplier_id
+                            join pd in db.Pengadaan_Detail
+                            on ph.peng_id equals pd.peng_id
+                            where sp.stsrc == "A"
+                            group pd by sp.sup_nama into temp
+                            select new
+                            {
+                                Nama = temp.Key,
+                                Total = temp.Sum(pd => pd.pengd_harga * pd.pengd_jumlah)
+                            };
+                foreach (var tabel in query)
+                {
+                    Console.WriteLine(tabel.Nama + "            " + tabel.Total);
+                }
+                Console.WriteLine(" ");
+                Console.WriteLine("Press Enter to exit...");
+                Console.ReadKey();
+                main_menu();
+            }
+        }
+    }
+}
