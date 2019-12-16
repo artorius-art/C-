@@ -1,0 +1,425 @@
+@model NetCore.DataModel.Vendor_Master
+
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<script>
+
+    var bp;
+    var tbk = " ";
+    var tambah = " ";
+    var fax1 = " ";
+    var fax2 = " ";
+
+    function initialFax(data) {
+        let action = '@ViewBag.action'
+        if (action == "Edit") {
+            let faxValue = '@ViewBag.faxValue'; 
+            let value = faxValue.split('-', 1)[0];
+            data.component.option('value', value);
+        }
+    }
+    function initialFax1(data) {
+        let action = '@ViewBag.action'
+        if (action == "Edit") {
+            let faxValue = '@ViewBag.faxValue'; 
+            let value = faxValue.split('-', 2)[0];
+            data.component.option('value', value);
+        }
+    }
+    function infax1(data) {
+        fax1 = data.component.option("value");
+     $("#faxhiden").dxTextBox("instance").option("value", fax1 + "-" + fax2);
+    }
+    function infax2(data) {
+        fax2 = data.component.option("value");
+     $("#faxhiden").dxTextBox("instance").option("value", fax1 + "-" + fax2);
+    }
+
+    function rubah(data) {
+
+        var stringa = 8;
+        var stringb = 3;
+        bp = data.component.option("value");
+        var ds = $("#tp").dxSelectBox("instance");
+        var ktpa = $("#ktp").dxNumberBox("instance");
+        var cekktpa = $("#cekktp").dxCheckBox("instance");
+        var nopkpe = $("#noopkp").dxTextBox("instance");
+        var tangg = $("#tang").dxSelectBox("instance");
+        var tpkp = $("#tgllpkp").dxDateBox("instance");
+        function ilang() {
+            document.getElementById("tipe").style.display = "none";
+            document.getElementById("npkp").style.display = "initial";
+            document.getElementById("tglpkp").style.display = "initial";
+            ds.option("visible", false);
+            nopkpe.option("visible", true);
+            tpkp.option("visible", true);
+            document.getElementById("ketepe").style.display = "none";
+            document.getElementById("stspeng").style.display = "none";
+            document.getElementById("apakah").style.display = "none";
+            ktpa.option("visible", false);
+            tangg.option("visible", false);
+            cekktpa.option("visible", false);
+            tambah = "Yayasan";
+        }
+        if (bp == 1) { ilang(); tambah = "CV."; }
+        else if (bp == 2) { ilang(); tambah = "Firma"; }
+        else if (bp == 4) { ilang(); tambah = "KOS"; }
+        else if (bp == 5) { ilang(); tambah = "Koperasi"; }
+        else if (bp == 6) { ilang(); tambah = "PD."; }
+        else if (bp == 7) { ilang(); tambah = "Persekutuan Perdata"; }
+        else if (bp == 9) { ilang(); tambah = "PU."; }
+        else if (bp == 5) { ilang(); tambah = "Koperasi"; }
+        else if (bp == stringa) {
+            document.getElementById("tipe").style.display = "initial";
+            document.getElementById("npkp").style.display = "initial";
+            document.getElementById("tglpkp").style.display = "initial";
+            ds.option("visible", true);
+            nopkpe.option("visible", true);
+            tpkp.option("visible", true);
+            document.getElementById("ketepe").style.display = "none";
+            document.getElementById("stspeng").style.display = "none";
+            document.getElementById("apakah").style.display = "none";
+            ktpa.option("visible", false);
+            tangg.option("visible", false);
+            cekktpa.option("visible", false);
+            tambah = "PT.";
+        } else if (bp == stringb) {
+            document.getElementById("tipe").style.display = "none";
+            document.getElementById("npkp").style.display = "none";
+            document.getElementById("tglpkp").style.display = "none";
+            ds.option("visible", false);
+            nopkpe.option("visible", false);
+            tpkp.option("visible", false);
+            document.getElementById("ketepe").style.display = "initial";
+            document.getElementById("stspeng").style.display = "initial";
+            document.getElementById("apakah").style.display = "initial";
+            ktpa.option("visible", true);
+            tangg.option("visible", true);
+            cekktpa.option("visible", true);
+            tambah = "Individu";
+        } else {
+            ilang();
+            tambah = "Yayasan";
+        }
+
+    }
+
+    function tbkp(data) {
+        var priv = "Privat";
+        var isi = data.component.option("value");
+        if (isi == priv) {
+            tbk = " ";
+        } else {
+            tbk = "Tbk";
+        }
+        
+    }
+    function nama(data) {
+        $("#namaperead")
+            .dxTextBox("instance")
+            .option("value", tambah + " " + data.value.replace() + " " + tbk);
+    }
+    function kota(e) {
+        var ds = $("#kota").dxSelectBox("instance").getDataSource();
+        var nul = $("#kota").dxSelectBox("instance");
+        ds.filter(["ref_propinsi_id", "=", e.value]);
+        ds.load();
+        nul.option("value", null);
+    }
+
+</script>
+
+
+
+<link href='https://fonts.googleapis.com/css?family=Lexend Deca' rel='stylesheet'>
+<style>
+    body {
+        color:black;
+        position: absolute;
+        top: 25px;
+        left: 15%;
+        font-size: 12px;
+        font-family: 'Lexend Deca';
+    }
+
+    label {
+        font-size: 12px;
+        font-family: 'Lexend Deca';
+    }
+    dx-selectbox{
+                font-family: 'Lexend Deca';
+
+    }
+    dx-button{
+        font-family: 'Lexend Deca';
+    }
+    td {
+        padding-left: 20px;
+        height: 20px;
+    }
+</style>
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<body>
+    <div class="card-controls">
+        <a href="@Url.Action("Index")"><i class="fa fa-arrow-left"></i> Kembali</a>
+    </div>
+    <div class="card bg-dark">
+        <p style="text-align:center; font-size:16px;">Isikanlah informasi Data Perusahaan anda, silahkan diinput informasinya disini.</p>
+        <div class="card bg-light">
+
+
+            <table width="800px">
+                <securehidden asp-for="ven_id"></securehidden>
+                <tr style="width: 10rem;">
+                    <td>
+                        <label> Bentuk Perusahaan   </label>
+                    </td>
+                    <td>
+                        @(Html.DevExtreme().SelectBoxFor(m => m.ref_bp_id)
+                            .ID("bp")
+                            .Height(30)
+                            .DataSource(d => d.Mvc()
+                            .LoadAction("GetReffDataBentuk")
+                            .Controller("Vendor_Master")
+                            .Key("ref_bp_id"))
+                        .DisplayExpr("ref_bp_kode")
+                        .ValueExpr("ref_bp_id")
+                        .StylingMode(EditorStylingMode.Underlined)
+                        .OnValueChanged("rubah")
+                        .Placeholder("Pilih Bentuk")
+                        )
+                    </td>
+                    <td>
+
+                        <label class="tipe" id="tipe">Privat / Tbk </label>
+                    </td>
+
+                    <td class="tipe" id="tipe">
+                        @(Html.DevExtreme().SelectBox()
+                           .ID("tp")
+                           .Name("tp")
+                           .Height(30)
+                           .DataSource(d => d.Mvc()
+                           .LoadAction("GetReffDataTipe")
+                           .Controller("Vendor_Master")
+                           .Key("tp_id"))
+                           .DisplayExpr("tp_nama")
+                           .ValueExpr("tp_id")
+                           .OnValueChanged("tbkp")
+                           .Visible(true)
+                           .StylingMode(EditorStylingMode.Underlined)
+                           .Placeholder("Tipe")
+
+                        )
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label>Nama Perusahaan</label>
+                    </td>
+                    <td colspan="2">
+                        @Html.DevExtreme().TextBoxFor(m => m.ven_nama).StylingMode(EditorStylingMode.Underlined).Height(20).ID("namaperusahaan").ValueChangeEvent("keyup").OnValueChanged("nama")
+
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td></td>
+                    <td><p style="font-size:8px;"><i>Tidak perlu masukkan Prefix PT/CV dsb.</i></p></td>
+                </tr>
+
+
+                <tr>
+                    <td></td>
+                    <td colspan="2">@Html.DevExtreme().TextBox().StylingMode(EditorStylingMode.Underlined).ReadOnly(true).ID("namaperead").Height(20)</td>
+                </tr>
+
+                <tr>
+                    <td><label>Alamat Perusahaan</label></td>
+
+                    <td colspan="2">
+                        @Html.DevExtreme().TextAreaFor(m => m.ven_alamat).StylingMode(EditorStylingMode.Underlined).ID("alamat")
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label> Provinsi</label>
+                </td>
+                <td colspan="2">
+                    @(Html.DevExtreme().SelectBox()
+                                         .ID("prop")
+                                         .Height(30)
+                                         .DataSource(d => d.Mvc()
+                                         .LoadAction("GetDataProp")
+                                         .Controller("Vendor_Master")
+                                         .Key("ref_propinsi_id"))
+                                     .DisplayExpr("ref_propinsi_nama")
+                                     .ValueExpr("ref_propinsi_id")
+                    .OnValueChanged("kota")
+                    .StylingMode(EditorStylingMode.Underlined).Placeholder("Pilih Provinsi")
+
+
+                    )
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label> Kota</label>
+                </td>
+                <td colspan="2">
+                    @(Html.DevExtreme().SelectBoxFor(m => m.ref_kota_id)
+                                                        .ID("kota")
+                                                        .Height(30)
+                                                        .DataSource(d => d.Mvc()
+                                                        .LoadAction("GetDataKota")
+                                                        .Controller("Vendor_Master")
+                                                        .Key("ref_kota_id"))
+                                                    .DisplayExpr("ref_kota_nama")
+                                                    .ValueExpr("ref_kota_id")
+                                                    .StylingMode(EditorStylingMode.Underlined).Placeholder("Pilih Kota")
+                    )
+
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Kode Pos</label></td>
+                <td>@Html.DevExtreme().NumberBoxFor(m => m.ven_kdpos).StylingMode(EditorStylingMode.Underlined).Height(20).ID("kodepos")</td>
+            </tr>
+
+            <tr>
+                <td><label>Telepon</label></td>
+                <td>@Html.DevExtreme().TextBox().StylingMode(EditorStylingMode.Underlined).Width("30%").Height(20).Value(null).ID("notelp1").Name("notelp1")</td>
+                <td>@Html.DevExtreme().NumberBox().StylingMode(EditorStylingMode.Underlined).Height(20).Value(null).ID("notelp2").Name("notelp2")</td>
+                <td><p>Ext</p> </td>
+                <td>@Html.DevExtreme().NumberBox().StylingMode(EditorStylingMode.Underlined).Width("30%").Height(20).Value(null).ID("notelp3").Name("notelp3")</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><p style="font-size:8px;"><i>Kd. Negara</i></p></td>
+                <td><p style="font-size:8px;"><i>No. Telepon</i></p></td>
+                <td></td>
+                <td><p style="font-size:8px;"><i>No. Tambahan</i></p></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>@Html.DevExtreme().NumberBox().StylingMode(EditorStylingMode.Underlined).Width("30%").Height(20).Value(null).ID("notelp4").Name("notelp4")</td>
+                <td>@Html.DevExtreme().NumberBox().StylingMode(EditorStylingMode.Underlined).Height(20).Value(null).ID("notelp5").Name("notelp5")</td>
+                <td><p>Ext</p> </td>
+                <td>@Html.DevExtreme().NumberBox().StylingMode(EditorStylingMode.Underlined).Width("30%").Height(20).Value(null).ID("notelp6").Name("notelp6")</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><p style="font-size:8px;"><i>Kd. Negara</i></p></td>
+                <td><p style="font-size:8px;"><i>No. Telepon</i></p></td>
+                <td></td>
+                <td><p style="font-size:8px;"><i>No. Tambahan</i></p></td>
+            </tr>
+
+            <tr>
+                <td><label>Fax</label></td>
+                <td>@(Html.DevExtreme().NumberBox()
+                    .ID("fax")
+                .StylingMode(EditorStylingMode.Underlined)
+                .Width("30%").Height(20).Value(null)
+                //.OnInitialized("initialFax")
+                .ValueChangeEvent("keyup")
+                .OnValueChanged("infax1"))</td>
+                <td>@(Html.DevExtreme().NumberBox()
+                .ID("fax1")
+                .StylingMode(EditorStylingMode.Underlined)
+                .Height(20)
+                .Value(null)
+                //.OnInitialized("initialFax1")
+                .ValueChangeEvent("keyup")
+                .OnValueChanged("infax2"))</td><td>
+    @Html.DevExtreme().TextBoxFor(m => m.ven_fax).ID("faxhiden").Height(20).Visible(true)
+</td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td><p style="font-size:8px;"><i>Kd. Negara</i></p></td>
+                <td><p style="font-size:8px;"><i>No. Fax</i></p></td>
+            </tr>
+
+            <tr>
+                <td><label>NPWP</label></td>
+                <td>@Html.DevExtreme().TextBoxFor(m => m.ven_npwp).StylingMode(EditorStylingMode.Underlined).Mask("00.000.000.0-000.000").Height(20)</td>
+            </tr>
+
+            <tr>
+                <td class="npkp" id="npkp"><label>Nomor PKP</label></td>
+                <td>@(Html.DevExtreme().TextBoxFor(m => m.ven_pkp).ID("noopkp").StylingMode(EditorStylingMode.Underlined).Height(20).Visible(true))</td>
+            </tr>
+            <tr>
+                <td class="ketepe" id="ketepe"><label>Nomor KTP</label><br /></td>
+                <td>@Html.DevExtreme().NumberBoxFor(m => m.ven_ktp_individu).ID("ktp").StylingMode(EditorStylingMode.Underlined).Height(20).Visible(false).Value(null)</td>
+                <td>
+                    <label class="apakah" id="apakah" style="font-size:8px;"><i>Apakah Anda Pernah Menerima Pendapatan Selain Dari BI</i></label>
+                    @(Html.DevExtreme().CheckBox().Value(false).ID("cekktp").Visible(false)
+                    )
+
+                </td>
+            </tr>
+
+            <tr>
+                <td class="stspeng" id="stspeng"><label>Status Penghasilan Tidak Kena Pajak</label></td>
+                <td>
+                    @(Html.DevExtreme().SelectBox()
+                     .ID("tang")
+                     .Height(30)
+                     .DataSource(d => d.Mvc()
+                     .LoadAction("GetReffDataKawin")
+                     .Controller("Vendor_Master")
+                     .Key("Value"))
+                     .DisplayExpr("Text")
+                     .ValueExpr("Value")
+                     .Visible(true)
+                     .StylingMode(EditorStylingMode.Underlined)
+                    )
+                </td>
+            </tr>
+            <tr>
+                <td class="tglpkp" id="tglpkp"><label>Tgl Pengukuhan PKP</label></td>
+                <td>
+                    @Html.DevExtreme().DateBoxFor(m => m.ven_tgl_pkp).ID("tgllpkp").StylingMode(EditorStylingMode.Underlined).Height(20)
+                    @Html.DevExtreme().SelectBox().ID("tang")
+                </td>
+            </tr>
+            <tr>
+                <td><label>Alamat Website</label></td>
+                <td>@Html.DevExtreme().TextBoxFor(m => m.ven_web).StylingMode(EditorStylingMode.Underlined).ID("web").Height(20)</td>
+            </tr>
+            <tr>
+                <td><label>Email Website</label></td>
+                <td>@Html.DevExtreme().TextBoxFor(m => m.ven_email).StylingMode(EditorStylingMode.Underlined).Height(20).ID("email")</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <div>
+                        @Html.DevExtreme().Button().ID("btnSave").Text("Simpan").UseSubmitBehavior(true).Type(ButtonType.Default).Width(130).Height(50)
+                        </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+
+}
